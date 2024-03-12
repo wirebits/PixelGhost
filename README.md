@@ -1,31 +1,47 @@
 # PixelGhost
 A tool which hides the messages in the image using LSB method.
 
-<h1>Setup</h1>
+# Key Features
+- It hides the message using LSB method.<br>
+- Message can be decoded only by this tool.<br>
+
+# Setup
 1. Make sure the latest python and pip3 is installed on your system (Windows/Linux/MacOS).<br>
-2. Install the <i>pillow</i> module on your system (Windows/Linux/MacOS) by copy and run the following command :<br><br>
+2. Install the <i>pillow</i> module on your system (Windows/Linux/MacOS) by copy and run the following command : <br>
 
 ```
 pip3 install -r requirements.txt
 ```
 
-<h1>Tested Systems</h1>
+# Parameters
+1. **-e** : Encode
+2. **-d** : Decode
+3. **-i** : Input Image
+4. **-m** : Message want to hide
+5. **-o** : Output Image
+
+# Tested Systems
 The tool is currently tested on : <br>
 1. Windows (10)<br>
-The testing is going on different systems.<br>
 
 # Install and Run
 1. Download or Clone the Repository.<br>
-2. Open the folder and run the CMD/Powershell (Windows) or Terminal (Linux) in it and type the following commands for different operations : <br>
-3. Encode the message into image : <br>
+2. Open the folder and run the CMD/Powershell (Windows) or Terminal (Linux) in it : <br>
+## Encode the message
+- Windows
 ```
-python PixelGhost.py -e -i image_name.png -m "Message inside this" -o output_image_name.png
+python PixelGhost.py -e -i input_image_name.png -m "Message inside this" -o output_image_name.png
 ```
-4. Decode the message from image : <br>
+- Linux
+```
+python3 PixelGhost.py -e -i input_image_name.png -m "Message inside this" -o output_image_name.png
+```
+## Decode the message
+- Windows
 ```
 python PixelGhost.py -d -i output_image_name.png
 ```
-
-<h1>Key Features</h1>
-<b>1. It hides the message like a ghost.</b><br>
-<b>2. Message can be shown only by this tool.</b><br>
+- Linux
+```
+python3 PixelGhost.py -d -i output_image_name.png
+```
