@@ -16,7 +16,7 @@ The testing is going on different systems.<br>
 
 # Install and Run
 1. Download or Clone the Repository.<br>
-2. Open the folder and run the *PixelGhost.py* file.<br>
+2. Open the folder and run the CMD/Powershell (Windows) or Terminal (Linux) in it and type the following commands for different operations : <br>
 3. Encode the message into image : <br>
 ```
 python PixelGhost.py -e -i image_name.png -m "Message inside this" -o output_image_name.png
