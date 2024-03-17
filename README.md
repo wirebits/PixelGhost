@@ -20,6 +20,9 @@ pip3 install -r requirements.txt
 4. **-m** : Message want to hide
 5. **-o** : Output Image
 
+# Supported Image Format
+- Currently it supports `.png`.
+
 # Tested Systems
 The tool is currently tested on : <br>
 1. Windows (10)<br>
