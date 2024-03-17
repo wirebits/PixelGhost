@@ -21,7 +21,9 @@ pip3 install -r requirements.txt
 5. **-o** : Output Image
 
 # Supported Image Format
-- Currently it supports `.png`.
+- Currently it supports `.png`.<br>
+- Use `.png` format images for hide messages more securely.<br>
+- Try to use those `.png` image with background not transparent background.<br>
 
 # Tested Systems
 The tool is currently tested on : <br>
