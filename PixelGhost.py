@@ -19,13 +19,41 @@ def encode_message(originalImage, stegImage, message):
     encImage.save(stegImage)
     print("Message encoded successfully!")
 
-def decode_message(stegImage):
+def encode_file(originalImage, stegImage, filepath):
+    if not os.path.exists(originalImage):
+        print("Original Image does not exist!")
+        return
+    if not os.path.exists(filepath):
+        print("File to hide does not exist!")
+        return
+    
+    with open(filepath, 'rb') as file:
+        file_data = file.read()
+    
+    file_data = file_data.decode('latin-1') + '\x00'
+    
+    image = Image.open(originalImage)
+    encImage = encodeMessageInPixels(image.copy(), file_data)
+    encImage.save(stegImage)
+    print("File encoded successfully!")
+
+def decode_message(stegImage, outputFile=None):
     if not os.path.exists(stegImage):
         print("Steg Image does not exist!")
         return
     image = Image.open(stegImage)
     hidden_message = decode_image(image)
-    print("Hidden Message : ", hidden_message)
+
+    hidden_message = hidden_message.replace('\n', '')
+
+    if outputFile:
+        if not outputFile.lower().endswith('.txt'):
+            outputFile += '.txt'
+        with open(outputFile, 'w', encoding='latin-1') as file:
+            file.write(hidden_message)
+        print("Hidden message saved locally!")
+    else:
+        print("Hidden Message: ", hidden_message)
 
 def encodeMessageInPixels(conImage, hdata):
     imgSize = conImage.size[0]
@@ -93,18 +121,40 @@ def main():
     parser.add_argument('-d', '--decode', action='store_true', help='Decode message from an image')
     parser.add_argument('-i', '--input', type=str, help='Input image file')
     parser.add_argument('-m', '--message', type=str, help='Message to encode')
-    parser.add_argument('-o', '--output', type=str, help='Output image file with encoded message')
+    parser.add_argument('-f', '--file', type=str, help='File to hide inside the image')
+    parser.add_argument('-o', '--output', type=str, help='Output image file with encoded message or output file for decoded data')
+    parser.add_argument('-s', '--save', type=str, help='File to save the decoded hidden message (optional, for use with -d)')
 
     args = parser.parse_args()
 
     if args.encode:
-        if not args.input or not args.message or not args.output:
+        if not args.output:
+            print("Please specify an output file name.")
             return
-        encode_message(args.input, args.output, args.message)
+
+        if not args.output.lower().endswith('.png'):
+            args.output += '.png'
+
+        if args.file:
+            if not args.file.lower().endswith('.txt'):
+                print("Error: Only .txt files are allowed with the -f option.")
+                return
+            if not args.input:
+                print("Please specify input image files for encoding the file.")
+                return
+            encode_file(args.input, args.output, args.file)
+        elif args.message:
+            if not args.input:
+                print("Please specify input image files for encoding the message.")
+                return
+            encode_message(args.input, args.output, args.message)
+        else:
+            print("Please specify a message or file to encode.")
     elif args.decode:
         if not args.input:
+            print("Please specify an input image file for decoding.")
             return
-        decode_message(args.input)
+        decode_message(args.input, args.save)
     else:
         print("Type python PixelGhost.py -h for help!")
 
