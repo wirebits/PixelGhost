@@ -2,8 +2,21 @@
 A tool which hides the messages in the image using LSB method.
 
 # Key Features
-- It hides the message using LSB method.<br>
-- Message can be decoded only by this tool.<br>
+- It hides the message using LSB method.
+- Message can be decoded only by this tool.
+
+# JPG To PNG CLI Converter
+- It is a small command-line tool so that it converts `.jpg` files into `.png` files.
+- It can download from [here]().
+- It works only on Windows.
+- To use this tool, create a folder and put this tool and `.jpg` file in it.
+- Open Terminal.
+- Type the following command and press enter :
+  
+  ```
+  JPGToPNGConverter.exe INPUT.jpg OUTPUT
+  ```
+- Replace `INPUT` with actual file name of the `.jpg` file and `OUTPUT` with actual file name of `.png` file.
 
 # Setup
 1. Make sure the latest python and pip3 is installed on your system (Windows/Linux/MacOS).<br>
