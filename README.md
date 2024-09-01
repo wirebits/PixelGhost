@@ -7,7 +7,7 @@ A tool which hides the messages in the image using LSB method.
 
 # JPG To PNG CLI Converter
 - It is a small command-line tool so that it converts `.jpg` files into `.png` files.
-- It can download from [here]().
+- It can download from [here](https://github.com/wirebits/PixelGhost/releases/download/v1.0.0/JPGToPNGConverter.exe).
 - It works only on Windows.
 - To use this tool, create a folder and put this tool and `.jpg` file in it.
 - Open Terminal.
