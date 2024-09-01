@@ -5,7 +5,6 @@
 import os
 import argparse
 from PIL import Image
-from io import BytesIO
 
 def encode_message(originalImage, stegImage, message):
     if not os.path.exists(originalImage):
@@ -15,6 +14,7 @@ def encode_message(originalImage, stegImage, message):
         print("Enter some message to hide!")
         return
     image = Image.open(originalImage)
+    message += '\x00'
     encImage = encodeMessageInPixels(image.copy(), message)
     encImage.save(stegImage)
     print("Message encoded successfully!")
@@ -47,18 +47,12 @@ def pixelsModification(picElement, hiddenData):
         picElement = [value for value in imageData.__next__()[:3] +
                       imageData.__next__()[:3] +
                       imageData.__next__()[:3]]
-        for j in range(0, 8):
+        for j in range(8):
             if dataList[i][j] == '0' and picElement[j] % 2 != 0:
                 picElement[j] -= 1
             elif dataList[i][j] == '1' and picElement[j] % 2 == 0:
-                picElement[j] -= 1
-        if i == dataLen - 1:
-            if picElement[-1] % 2 == 0:
-                picElement[-1] -= 1
-        else:
-            if picElement[-1] % 2 != 0:
-                picElement[-1] -= 1
-        picElement = tuple(picElement)
+                picElement[j] += 1
+        picElement = tuple([min(max(0, val), 255) for val in picElement])
         yield picElement[0:3]
         yield picElement[3:6]
         yield picElement[6:9]
@@ -73,18 +67,24 @@ def decode_image(cipImage):
     imgData = iter(cipImage.getdata())
     data = ''
     while True:
-        pixels = [value for value in imgData.__next__()[:3] +
-                  imgData.__next__()[:3] +
-                  imgData.__next__()[:3]]
+        try:
+            pixels = [value for value in imgData.__next__()[:3] +
+                      imgData.__next__()[:3] +
+                      imgData.__next__()[:3]]
+        except StopIteration:
+            break
+        
         binaryString = ''
         for w in pixels[:8]:
             if w % 2 == 0:
                 binaryString += '0'
             else:
                 binaryString += '1'
-        data += chr(int(binaryString, 2))
-        if pixels[-1] % 2 != 0:
-            return data
+        char = chr(int(binaryString, 2))
+        if char == '\x00':
+            break
+        data += char
+    return data
 
 def main():
     parser = argparse.ArgumentParser(description='PixelGhost')
@@ -99,16 +99,14 @@ def main():
 
     if args.encode:
         if not args.input or not args.message or not args.output:
-            print("Missing arguments. Usage: python PixelGhost.py -e -i inputimage -m message -o outputimage")
             return
         encode_message(args.input, args.output, args.message)
     elif args.decode:
         if not args.input:
-            print("Missing input image. Usage: python PixelGhost.py -d -i inputimage")
             return
         decode_message(args.input)
     else:
-        print("Please specify either encode or decode operation.")
+        print("Type python PixelGhost.py -h for help!")
 
 if __name__ == "__main__":
     main()
